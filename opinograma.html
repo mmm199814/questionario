@@ -365,31 +365,37 @@
       // Nota: aqui podes também fazer um POST para um endpoint/Power Automate, se precisares de controlo global.
     });
   }
-  //respostas de cada um
-  const respostasArray = [];
-  formData.forEach((value,key)=>{
-    if (value !=="NA"){
+  //enviar respostas power apps
+  document.getElementById("formQuestionario").addEventListener("submit", function(e) { 
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  const respostas = [];
+
+  formData.forEach((value, key) => {
+    if (value !== "NA") {
       let repeticao = 0;
 
-      if (key.includes("_r")){
-        repeticao=parseInt(key.split("_r")[1]);
+      if (key.includes("_r")) {
+        repeticao = parseInt(key.split("_r")[1]);
         key = key.split("_r")[0];
       }
 
-      respostasArray.push({
-        pergunta:key,
+      respostas.push({
+        pergunta: key,
         valor: parseInt(value),
-        repeticao:repeticao
+        repeticao: repeticao
       });
     }
   });
 
-  //enviar para o Power Automate
+  const payload = encodeURIComponent(JSON.stringify(respostas));
 
-  body:JSON.stringify({
-    respostas: respostasArray,
-    formandos:formandos
-  })
+  // 👉 REDIRECIONA PARA POWER APPS
+  window.location.href =
+    "https://apps.powerapps.com/play/b38a6d7a-a597-4c9e-bd00-4e7b09fa6573?dados=" + payload;
+});
+
 
   // Executar
   repetirBloco3(repeticoes);
