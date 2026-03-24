@@ -365,6 +365,31 @@
       // Nota: aqui podes também fazer um POST para um endpoint/Power Automate, se precisares de controlo global.
     });
   }
+  //respostas de cada um
+  const respostasArray = [];
+  formData.forEach((value,key)=>{
+    if (value !=="NA"){
+      let repeticao = 0;
+
+      if (key.includes("_r")){
+        repeticao=parseInt(key.split("_r")[1]);
+        key = key.split("_r")[0];
+      }
+
+      respostasArray.push({
+        pergunta:key,
+        valor: parseInt(value),
+        repeticao:repeticao
+      });
+    }
+  });
+
+  //enviar para o Power Automate
+
+  body:JSON.stringify({
+    respostas: respostasArray,
+    formandos:formandos
+  })
 
   // Executar
   repetirBloco3(repeticoes);
