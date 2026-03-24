@@ -387,8 +387,7 @@
         pergunta: key,
         valor: parseInt(value),
         repeticao: repeticao,
-        cursoId: cursoId,
-        formandoId: formandoId
+       
       });
     }
   });
@@ -397,7 +396,10 @@
 
   // 👉 REDIRECIONA PARA POWER APPS
   window.location.href =
-    "https://apps.powerapps.com/play/b38a6d7a-a597-4c9e-bd00-4e7b09fa6573/QRCODEGENERATE?dados=" + payload;
+    "https://apps.powerapps.com/play/b38a6d7a-a597-4c9e-bd00-4e7b09fa6573?" 
+    + "cursoId=" + cursoId
+    + "&formandoId="+formandoId
+    + "&dados=" + payload;
 });
 
 
