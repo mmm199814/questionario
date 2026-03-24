@@ -1,0 +1,377 @@
+
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Questionário de Avaliação</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.35; }
+    h1 { color: #111; margin-top: 0; }
+    h2 { margin-top: 40px; color: #003366; }
+    .pergunta { margin-bottom: 15px; padding: 10px; background: #f2f2f2; border-radius: 6px; }
+    .escala { margin-top: 5px; display: grid; grid-auto-flow: column; gap: 10px; width: fit-content; }
+    button[type="submit"] { padding: 10px 16px; border: 0; background: #003366; color: #fff; border-radius: 6px; cursor: pointer; }
+    button[type="submit"]:disabled { background: #9aa6b2; cursor: not-allowed; }
+    .nota { font-size: 0.95rem; color: #333; background: #eef5ff; padding: 8px 10px; border-left: 3px solid #003366; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+<h1>Questionário de Avaliação</h1>
+<p class="nota">Abra este ficheiro com parâmetros, por ex.: <code>?repeticoes=2&amp;formandos=10</code>. Os valores podem ser enviados a partir do Power Apps via <code>Launch()</code>.</p>
+<p>Por favor, responda a todas as questões utilizando a escala de 1 a 4, ou N.A. quando não aplicável.</p>
+
+<form id="formQuestionario">
+  <!-- ========================== -->
+  <!--      SECÇÃO 1             -->
+  <!-- ========================== -->
+  <h2>1. PLANEAMENTO E EXECUÇÃO DA FORMAÇÃO</h2>
+
+  <div class="pergunta">
+    1.1 Os objetivos do curso/módulo foram cumpridos<br>
+    <div class="escala">
+      <label><input type="radio" name="p1_1" value="1"> 1</label>
+      <label><input type="radio" name="p1_1" value="2"> 2</label>
+      <label><input type="radio" name="p1_1" value="3"> 3</label>
+      <label><input type="radio" name="p1_1" value="4"> 4</label>
+      <label><input type="radio" name="p1_1" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    1.2 Os instrumentos de avaliação permitiram avaliar a aprendizagem
+    <div class="escala">
+      <label><input type="radio" name="p1_2" value="1"> 1</label>
+      <label><input type="radio" name="p1_2" value="2"> 2</label>
+      <label><input type="radio" name="p1_2" value="3"> 3</label>
+      <label><input type="radio" name="p1_2" value="4"> 4</label>
+      <label><input type="radio" name="p1_2" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    1.3 A duração do curso/módulo foi adequada aos objetivos e conteúdos
+    <div class="escala">
+      <label><input type="radio" name="p1_3" value="1"> 1</label>
+      <label><input type="radio" name="p1_3" value="2"> 2</label>
+      <label><input type="radio" name="p1_3" value="3"> 3</label>
+      <label><input type="radio" name="p1_3" value="4"> 4</label>
+      <label><input type="radio" name="p1_3" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    1.4 A distribuição da carga horária foi equilibrada
+    <div class="escala">
+      <label><input type="radio" name="p1_4" value="1"> 1</label>
+      <label><input type="radio" name="p1_4" value="2"> 2</label>
+      <label><input type="radio" name="p1_4" value="3"> 3</label>
+      <label><input type="radio" name="p1_4" value="4"> 4</label>
+      <label><input type="radio" name="p1_4" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    1.5 Os horários foram cumpridos
+    <div class="escala">
+      <label><input type="radio" name="p1_5" value="1"> 1</label>
+      <label><input type="radio" name="p1_5" value="2"> 2</label>
+      <label><input type="radio" name="p1_5" value="3"> 3</label>
+      <label><input type="radio" name="p1_5" value="4"> 4</label>
+      <label><input type="radio" name="p1_5" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <!-- ========================== -->
+  <!--      SECÇÃO 2             -->
+  <!-- ========================== -->
+  <h2>2. RECURSOS UTILIZADOS</h2>
+
+  <div class="pergunta">
+    2.1 Os meios audiovisuais/equipamentos utilizados contribuíram para a aprendizagem
+    <div class="escala">
+      <label><input type="radio" name="p2_1" value="1"> 1</label>
+      <label><input type="radio" name="p2_1" value="2"> 2</label>
+      <label><input type="radio" name="p2_1" value="3"> 3</label>
+      <label><input type="radio" name="p2_1" value="4"> 4</label>
+      <label><input type="radio" name="p2_1" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    2.2 Os conteúdos, documentação e manuais disponibilizados estavam atualizados
+    <div class="escala">
+      <label><input type="radio" name="p2_2" value="1"> 1</label>
+      <label><input type="radio" name="p2_2" value="2"> 2</label>
+      <label><input type="radio" name="p2_2" value="3"> 3</label>
+      <label><input type="radio" name="p2_2" value="4"> 4</label>
+      <label><input type="radio" name="p2_2" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    2.3 Os conteúdos e manuais disponibilizados foram úteis
+    <div class="escala">
+      <label><input type="radio" name="p2_3" value="1"> 1</label>
+      <label><input type="radio" name="p2_3" value="2"> 2</label>
+      <label><input type="radio" name="p2_3" value="3"> 3</label>
+      <label><input type="radio" name="p2_3" value="4"> 4</label>
+      <label><input type="radio" name="p2_3" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <div class="pergunta">
+    2.4 As condições físicas das infraestruturas utilizadas foram adequadas
+    <div class="escala">
+      <label><input type="radio" name="p2_4" value="1"> 1</label>
+      <label><input type="radio" name="p2_4" value="2"> 2</label>
+      <label><input type="radio" name="p2_4" value="3"> 3</label>
+      <label><input type="radio" name="p2_4" value="4"> 4</label>
+      <label><input type="radio" name="p2_4" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <!-- ========================== -->
+  <!--      SECÇÃO 3 (BLOCO)     -->
+  <!-- ========================== -->
+  <div id="bloco3">
+    <h2>3. DESEMPENHO DO/A FORMADOR/A</h2>
+
+    <div class="pergunta">3.1 Preparação e domínio dos conteúdos
+      <div class="escala">
+        <label><input type="radio" name="p3_1" value="1"> 1</label>
+        <label><input type="radio" name="p3_1" value="2"> 2</label>
+        <label><input type="radio" name="p3_1" value="3"> 3</label>
+        <label><input type="radio" name="p3_1" value="4"> 4</label>
+        <label><input type="radio" name="p3_1" value="NA"> N.A.</label>
+      </div>
+    </div>
+
+    <div class="pergunta">3.2 Gestão da plataforma de aprendizagem
+      <div class="escala">
+        <label><input type="radio" name="p3_2" value="1"> 1</label>
+        <label><input type="radio" name="p3_2" value="2"> 2</label>
+        <label><input type="radio" name="p3_2" value="3"> 3</label>
+        <label><input type="radio" name="p3_2" value="4"> 4</label>
+        <label><input type="radio" name="p3_2" value="NA"> N.A.</label>
+      </div>
+    </div>
+
+    <div class="pergunta">3.3 Clareza do discurso
+      <div class="escala">
+        <label><input type="radio" name="p3_3" value="1"> 1</label>
+        <label><input type="radio" name="p3_3" value="2"> 2</label>
+        <label><input type="radio" name="p3_3" value="3"> 3</label>
+        <label><input type="radio" name="p3_3" value="4"> 4</label>
+        <label><input type="radio" name="p3_3" value="NA"> N.A.</label>
+      </div>
+    </div>
+
+    <div class="pergunta">3.4 Motivação e interesse
+      <div class="escala">
+        <label><input type="radio" name="p3_4" value="1"> 1</label>
+        <label><input type="radio" name="p3_4" value="2"> 2</label>
+        <label><input type="radio" name="p3_4" value="3"> 3</label>
+        <label><input type="radio" name="p3_4" value="4"> 4</label>
+        <label><input type="radio" name="p3_4" value="NA"> N.A.</label>
+      </div>
+    </div>
+
+    <div class="pergunta">3.5 Relacionamento com formandos
+      <div class="escala">
+        <label><input type="radio" name="p3_5" value="1"> 1</label>
+        <label><input type="radio" name="p3_5" value="2"> 2</label>
+        <label><input type="radio" name="p3_5" value="3"> 3</label>
+        <label><input type="radio" name="p3_5" value="4"> 4</label>
+        <label><input type="radio" name="p3_5" value="NA"> N.A.</label>
+      </div>
+    </div>
+
+    <div class="pergunta">3.6 Disponibilidade para esclarecer dúvidas
+      <div class="escala">
+        <label><input type="radio" name="p3_6" value="1"> 1</label>
+        <label><input type="radio" name="p3_6" value="2"> 2</label>
+        <label><input type="radio" name="p3_6" value="3"> 3</label>
+        <label><input type="radio" name="p3_6" value="4"> 4</label>
+        <label><input type="radio" name="p3_6" value="NA"> N.A.</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================== -->
+  <!--      SECÇÃO 4             -->
+  <!-- ========================== -->
+  <h2>4. PLATAFORMA DE APRENDIZAGEM</h2>
+
+  <div class="pergunta">4.1 A plataforma facilitou a interação
+    <div class="escala">
+      <label><input type="radio" name="p4_1" value="1"> 1</label>
+      <label><input type="radio" name="p4_1" value="2"> 2</label>
+      <label><input type="radio" name="p4_1" value="3"> 3</label>
+      <label><input type="radio" name="p4_1" value="4"> 4</label>
+      <label><input type="radio" name="p4_1" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <div class="pergunta">4.2 A organização da informação permitiu navegação adequada
+    <div class="escala">
+      <label><input type="radio" name="p4_2" value="1"> 1</label>
+      <label><input type="radio" name="p4_2" value="2"> 2</label>
+      <label><input type="radio" name="p4_2" value="3"> 3</label>
+      <label><input type="radio" name="p4_2" value="4"> 4</label>
+      <label><input type="radio" name="p4_2" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <div class="pergunta">4.3 O acesso aos serviços da plataforma foi estável
+    <div class="escala">
+      <label><input type="radio" name="p4_3" value="1"> 1</label>
+      <label><input type="radio" name="p4_3" value="2"> 2</label>
+      <label><input type="radio" name="p4_3" value="3"> 3</label>
+      <label><input type="radio" name="p4_3" value="4"> 4</label>
+      <label><input type="radio" name="p4_3" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <!-- ========================== -->
+  <!--      SECÇÃO 5             -->
+  <!-- ========================== -->
+  <h2>5. APRECIAÇÃO GLOBAL DO CURSO/MÓDULO</h2>
+
+  <div class="pergunta">5.1 O curso contribuiu para a melhoria das suas competências
+    <div class="escala">
+      <label><input type="radio" name="p5_1" value="1"> 1</label>
+      <label><input type="radio" name="p5_1" value="2"> 2</label>
+      <label><input type="radio" name="p5_1" value="3"> 3</label>
+      <label><input type="radio" name="p5_1" value="4"> 4</label>
+      <label><input type="radio" name="p5_1" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <div class="pergunta">5.2 O curso revelou utilidade para as suas funções
+    <div class="escala">
+      <label><input type="radio" name="p5_2" value="1"> 1</label>
+      <label><input type="radio" name="p5_2" value="2"> 2</label>
+      <label><input type="radio" name="p5_2" value="3"> 3</label>
+      <label><input type="radio" name="p5_2" value="4"> 4</label>
+      <label><input type="radio" name="p5_2" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <div class="pergunta">5.3 O apoio do Diretor de Curso foi adequado
+    <div class="escala">
+      <label><input type="radio" name="p5_3" value="1"> 1</label>
+      <label><input type="radio" name="p5_3" value="2"> 2</label>
+      <label><input type="radio" name="p5_3" value="3"> 3</label>
+      <label><input type="radio" name="p5_3" value="4"> 4</label>
+      <label><input type="radio" name="p5_3" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <!-- ========================== -->
+  <!--      SECÇÃO 6             -->
+  <!-- ========================== -->
+  <h2>6. SATISFAÇÃO GLOBAL</h2>
+
+  <div class="pergunta">6.1 Satisfação global com o curso/módulo
+    <div class="escala">
+      <label><input type="radio" name="p6_1" value="1"> 1</label>
+      <label><input type="radio" name="p6_1" value="2"> 2</label>
+      <label><input type="radio" name="p6_1" value="3"> 3</label>
+      <label><input type="radio" name="p6_1" value="4"> 4</label>
+      <label><input type="radio" name="p6_1" value="NA"> N.A.</label>
+    </div>
+  </div>
+
+  <br><br>
+  <button type="submit">Submeter</button>
+</form>
+
+<!-- ========================== -->
+<!--      SCRIPT ÚNICO         -->
+<!-- ========================== -->
+<script>
+(() => {
+  console.log("[Questionário] Script iniciado…");
+
+  // 1) Ler parâmetros da URL
+  const qs = new URLSearchParams(location.search);
+  const repeticoes = Math.max(0, parseInt(qs.get("repeticoes") || "0", 10) || 0);
+  const formandos  = Math.max(1, parseInt(qs.get("formandos")  || "1", 10) || 1);
+
+  console.log("[Questionário] repeticoes =", repeticoes, "| formandos =", formandos);
+
+  // 2) Função para repetir a SECÇÃO 3 (bloco completo 3.1–3.6)
+  function repetirBloco3(n) {
+    const original = document.getElementById("bloco3");
+    if (!original) {
+      console.error("ERRO: Não existe nenhum elemento com id='bloco3'.");
+      return;
+    }
+    if (n <= 0) return;
+
+    const container = original.parentNode;
+    let afterNode = original; // Inserir sempre a seguir ao último inserido
+
+    for (let r = 1; r <= n; r++) {
+      console.log(`[Questionário] A criar cópia da Secção 3: repetição ${r}`);
+      const clone = original.cloneNode(true);
+      clone.removeAttribute("id");
+
+      // Atualizar o título do bloco clonado
+      const h2 = clone.querySelector("h2");
+      if (h2) h2.textContent = `3. DESEMPENHO DO/A FORMADOR/A (Repetição ${r})`;
+
+      // Tornar os names dos rádios únicos: p3_1 -> p3_1_r1
+      clone.querySelectorAll("input[type='radio']").forEach(inp => {
+        if (inp.name && inp.name.trim().startsWith("p3_")) {
+          inp.name = inp.name.trim() + "_r" + r;
+        }
+        inp.checked = false;
+      });
+
+      // Inserir logo após o último nó inserido
+      if (afterNode.nextSibling) {
+        container.insertBefore(clone, afterNode.nextSibling);
+      } else {
+        container.appendChild(clone);
+      }
+      afterNode = clone;
+    }
+  }
+
+  // 3) Limitar número de submissões (por navegador)
+  function controlarLimiteSubmissoes(max) {
+    const form = document.getElementById("formQuestionario");
+    if (!form) return;
+
+    // Usa o caminho da página como ID lógico deste formulário
+    const formId = (qs.get("formId") || location.pathname).toString();
+    const key = "submissoes_" + formId;
+
+    form.addEventListener("submit", e => {
+      const atual = parseInt(localStorage.getItem(key) || "0", 10) || 0;
+
+      if (atual >= max) {
+        e.preventDefault();
+        alert(`Limite de ${max} submissões atingido para este formulário neste dispositivo.`);
+        return;
+      }
+
+      // Registar a submissão no armazenamento local (cliente)
+      localStorage.setItem(key, String(atual + 1));
+      alert("Submissão registada com sucesso.");
+      // Nota: aqui podes também fazer um POST para um endpoint/Power Automate, se precisares de controlo global.
+    });
+  }
+
+  // Executar
+  repetirBloco3(repeticoes);
+  controlarLimiteSubmissoes(formandos);
+
+})();
+</script>
+
+</body>
+</html>
