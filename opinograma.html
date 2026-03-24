@@ -297,8 +297,10 @@
 
   // 1) Ler parâmetros da URL
   const qs = new URLSearchParams(location.search);
+  const cursoId= qs.get("cursoId");
   const repeticoes = Math.max(0, parseInt(qs.get("repeticoes") || "0", 10) || 0);
   const formandos  = Math.max(1, parseInt(qs.get("formandos")  || "1", 10) || 1);
+  const formandoId= Math.floor(Math.random()*10000000000);
 
   console.log("[Questionário] repeticoes =", repeticoes, "| formandos =", formandos);
 
@@ -384,7 +386,9 @@
       respostas.push({
         pergunta: key,
         valor: parseInt(value),
-        repeticao: repeticao
+        repeticao: repeticao,
+        cursoId: cursoId,
+        formandoId: formandoId
       });
     }
   });
