@@ -368,8 +368,11 @@
     });
   }
   //enviar respostas power apps
-  document.getElementById("formQuestionario").addEventListener("submit", function(e) { 
+document.getElementById("formQuestionario").addEventListener("submit", async function(e) {
   e.preventDefault();
+
+  const qs = new URLSearchParams(window.location.search);
+  const cursoId = qs.get("cursoId") || "Curso";
 
   const formData = new FormData(e.target);
   const respostas = [];
@@ -386,21 +389,28 @@
       respostas.push({
         pergunta: key,
         valor: parseInt(value),
-        repeticao: repeticao,
-       
+        repeticao: repeticao
       });
     }
   });
 
-  const payload = encodeURIComponent(JSON.stringify(respostas));
+  const payload = {
+    cursoId: cursoId,
+    respostas: respostas
+  };
 
-  // 👉 REDIRECIONA PARA POWER APPS
-  window.location.href =
-    "https://apps.powerapps.com/play/2ed414c8-0f68-4cbc-a83b-521e9f4543f3?" 
-    + "cursoId=" + cursoId
-    + "&formandoId="+formandoId
-    + "&dados=" + payload;
+  // 🔥 AQUI ENTRA O MAKE
+  await fetch("https://hook.eu1.make.com/whbvebcokhjvluk7hoy1i145owgdfavo", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(payload)
+  });
+
+  document.body.innerHTML = "<h2>Submetido com sucesso ✔️</h2>";
 });
+
 
 
   // Executar
