@@ -299,7 +299,8 @@
   const qs = new URLSearchParams(window.location.search);
   const cursoId = qs.get("cursoId") || "Curso";
   const repeticoes = Math.max(0, parseInt(qs.get("repeticoes") || "0", 10) || 0);
-
+  const formandos = parseInt(qs.get("formandos") || "1");
+  const formandoId = Math.random();
   // 🔹 Repetir bloco 3
   function repetirBloco3(n) {
     const original = document.getElementById("bloco3");
@@ -381,7 +382,9 @@ document.querySelectorAll(".escala").forEach(container => {
 
     const payload = {
       cursoId: cursoId,
+      formandos: formandos,
       respostas: respostas,
+      formandoId: formandoId,
       html: htmlCompleto
     };
 
@@ -390,7 +393,7 @@ document.querySelectorAll(".escala").forEach(container => {
     // 🔥 ENVIO VIA FORM (funciona sempre)
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = "https://script.google.com/macros/s/AKfycby4lySrCvVpJ5ZTJqxa3IDWmqy2wV7tiwpMBTRNrv9A7APoKmGwMzhTKJ5NuWH6HTDCbw/exec";
+    form.action = "https://script.google.com/macros/s/AKfycbxv2WxIzcEqL1PVBBiWHCS2UMBJ_UNjRcCiWcZHajBuXsbrErFclCbI7uUag3MbVblikw/exec";
 
     const input = document.createElement("input");
     input.type = "hidden";
