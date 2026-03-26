@@ -293,14 +293,12 @@
 <!-- ========================== -->
 <script>
 (() => {
-  console.log("[Questionário] Script iniciado…");
 
-  // 🔹 Ler parâmetros da URL
   const qs = new URLSearchParams(window.location.search);
   const cursoId = qs.get("cursoId") || "Curso";
-  const repeticoes = Math.max(0, parseInt(qs.get("repeticoes") || "0", 10) || 0);
+  const repeticoes = parseInt(qs.get("repeticoes") || "0");
 
-  // 🔹 Função para repetir bloco 3
+  // 🔹 Repetir bloco 3
   function repetirBloco3(n) {
     const original = document.getElementById("bloco3");
     if (!original || n <= 0) return;
@@ -312,11 +310,8 @@
       const clone = original.cloneNode(true);
       clone.removeAttribute("id");
 
-      const h2 = clone.querySelector("h2");
-      if (h2) h2.textContent = `3. DESEMPENHO DO/A FORMADOR/A (Repetição ${r})`;
-
-      clone.querySelectorAll("input[type='radio']").forEach(inp => {
-        if (inp.name && inp.name.startsWith("p3_")) {
+      clone.querySelectorAll("input").forEach(inp => {
+        if (inp.name.startsWith("p3_")) {
           inp.name = inp.name + "_r" + r;
         }
         inp.checked = false;
@@ -329,55 +324,51 @@
 
   repetirBloco3(repeticoes);
 
-  // 🔥 SUBMIT (ENVIO PARA GOOGLE SHEETS)
+  // 🔥 SUBMIT
   document.getElementById("formQuestionario").addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    try {
-      const formData = new FormData(e.target);
-      const respostas = [];
+    const formData = new FormData(e.target);
+    const respostas = [];
 
-      formData.forEach((value, key) => {
-        if (value !== "NA") {
-          let repeticao = 0;
+    formData.forEach((value, key) => {
+      if (value !== "NA") {
+        let repeticao = 0;
 
-          if (key.includes("_r")) {
-            repeticao = parseInt(key.split("_r")[1]);
-            key = key.split("_r")[0];
-          }
-
-          respostas.push({
-            pergunta: key,
-            valor: parseInt(value),
-            repeticao: repeticao
-          });
+        if (key.includes("_r")) {
+          repeticao = parseInt(key.split("_r")[1]);
+          key = key.split("_r")[0];
         }
-      });
 
-      const payload = {
-        cursoId: cursoId,
-        respostas: respostas
-      };
+        respostas.push({
+          pergunta: key,
+          valor: parseInt(value),
+          repeticao: repeticao
+        });
+      }
+    });
 
-      console.log("A enviar:", payload);
+    const payload = {
+      cursoId: cursoId,
+      respostas: respostas
+    };
 
-      // 🔥 ENVIO (com no-cors)
-      await fetch("https://script.google.com/macros/s/AKfycbzhy52Ofcp6AmRh5eu8s9OQ6r4u4uT0wtVv5wILKzMWTaJI8VYXItTKIyDGzkasQB1OEg/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
+    console.log("A enviar:", payload);
 
-      // 🔹 Feedback ao utilizador
-      document.body.innerHTML = "<h2>Submetido com sucesso ✔️</h2>";
+    // 🔥 ENVIO PARA GOOGLE SHEETS (CORRIGIDO)
+    const formBody = new URLSearchParams();
+    formBody.append("data", JSON.stringify(payload));
 
-    } catch (err) {
-      console.error("Erro:", err);
-      alert("Erro ao enviar. Ver consola (F12).");
-    }
+    await fetch("https://script.google.com/macros/s/AKfycbzQr8aGmaJ7kRdC8pCksMFTYNN-UgzkMuacgMFL26bhzYHhwDvEuVC5Ud6FbxzKIhCw9w/exec", {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: formBody.toString()
+    });
+
+    document.body.innerHTML = "<h2>Submetido com sucesso ✔️</h2>";
   });
 
 })();
