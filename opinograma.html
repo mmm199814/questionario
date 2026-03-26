@@ -357,6 +357,15 @@
     const btn = document.querySelector("button[type='submit']");
     if (btn) btn.style.display = "none";
 
+    // 🔥 marcar radios selecionados no HTML
+    document.querySelectorAll("input[type='radio']").forEach(radio => {
+     if (radio.checked) {
+    radio.setAttribute("checked", "checked");
+     } else {
+     radio.removeAttribute("checked");
+     }
+     });
+    
     // 🔥 remover scripts (para PDF limpo)
     document.querySelectorAll("script").forEach(s => s.remove());
 
