@@ -361,14 +361,13 @@
 
       console.log("A enviar:", payload);
 
-      const response = await fetch("https://script.google.com/macros/s/AKfycbzdGFyGAFwn21UdEof3wvo7Mv_4ZSYlLfKXkORbxtKJVH69NuGcFq0PZp59CSkm5PjSqQ/exec", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      });
-
+      const response = await fetch("https://script.google.com/macros/s/AKfycbyZB3Rt59KItR4e7ZpVDL5c81DYFFIvv70hBpsJLZwZ_aW8-K5KnRvZAEnvQxGFxfrCtg/exec", {
+  method: "POST",
+  mode: "no-cors",   // 🔥 IMPORTANTE
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(payload)
       const result = await response.text();
       console.log("Resposta:", result);
 
