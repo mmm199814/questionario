@@ -295,130 +295,92 @@
 (() => {
   console.log("[Questionário] Script iniciado…");
 
-  // 1) Ler parâmetros da URL
-  const qs = new URLSearchParams(location.search);
-  const cursoId= qs.get("cursoId");
+  const qs = new URLSearchParams(window.location.search);
+  const cursoId = qs.get("cursoId") || "Curso";
   const repeticoes = Math.max(0, parseInt(qs.get("repeticoes") || "0", 10) || 0);
-  const formandos  = Math.max(1, parseInt(qs.get("formandos")  || "1", 10) || 1);
-  const formandoId= Math.floor(Math.random()*10000000000);
+  const formandos = Math.max(1, parseInt(qs.get("formandos") || "1", 10) || 1);
 
-  console.log("[Questionário] repeticoes =", repeticoes, "| formandos =", formandos);
-
-  // 2) Função para repetir a SECÇÃO 3 (bloco completo 3.1–3.6)
+  // 🔹 Repetir bloco 3
   function repetirBloco3(n) {
     const original = document.getElementById("bloco3");
-    if (!original) {
-      console.error("ERRO: Não existe nenhum elemento com id='bloco3'.");
-      return;
-    }
-    if (n <= 0) return;
+    if (!original || n <= 0) return;
 
     const container = original.parentNode;
-    let afterNode = original; // Inserir sempre a seguir ao último inserido
+    let afterNode = original;
 
     for (let r = 1; r <= n; r++) {
-      console.log(`[Questionário] A criar cópia da Secção 3: repetição ${r}`);
       const clone = original.cloneNode(true);
       clone.removeAttribute("id");
 
-      // Atualizar o título do bloco clonado
       const h2 = clone.querySelector("h2");
       if (h2) h2.textContent = `3. DESEMPENHO DO/A FORMADOR/A (Repetição ${r})`;
 
-      // Tornar os names dos rádios únicos: p3_1 -> p3_1_r1
       clone.querySelectorAll("input[type='radio']").forEach(inp => {
-        if (inp.name && inp.name.trim().startsWith("p3_")) {
-          inp.name = inp.name.trim() + "_r" + r;
+        if (inp.name && inp.name.startsWith("p3_")) {
+          inp.name = inp.name + "_r" + r;
         }
         inp.checked = false;
       });
 
-      // Inserir logo após o último nó inserido
-      if (afterNode.nextSibling) {
-        container.insertBefore(clone, afterNode.nextSibling);
-      } else {
-        container.appendChild(clone);
-      }
+      container.insertBefore(clone, afterNode.nextSibling);
       afterNode = clone;
     }
   }
 
-  // 3) Limitar número de submissões (por navegador)
-  function controlarLimiteSubmissoes(max) {
-    const form = document.getElementById("formQuestionario");
-    if (!form) return;
+  repetirBloco3(repeticoes);
 
-    // Usa o caminho da página como ID lógico deste formulário
-    const formId = (qs.get("formId") || location.pathname).toString();
-    const key = "submissoes_" + formId;
+  // 🔥 SUBMIT (ÚNICO!)
+  document.getElementById("formQuestionario").addEventListener("submit", async function(e) {
+    e.preventDefault();
 
-    form.addEventListener("submit", e => {
-      const atual = parseInt(localStorage.getItem(key) || "0", 10) || 0;
+    try {
+      const formData = new FormData(e.target);
+      const respostas = [];
 
-      if (atual >= max) {
-        e.preventDefault();
-        alert(`Limite de ${max} submissões atingido para este formulário neste dispositivo.`);
-        return;
-      }
+      formData.forEach((value, key) => {
+        if (value !== "NA") {
+          let repeticao = 0;
 
-      // Registar a submissão no armazenamento local (cliente)
-      localStorage.setItem(key, String(atual + 1));
-      alert("Submissão registada com sucesso.");
-      // Nota: aqui podes também fazer um POST para um endpoint/Power Automate, se precisares de controlo global.
-    });
-  }
-  //enviar respostas power apps
-document.getElementById("formQuestionario").addEventListener("submit", async function(e) {
-  e.preventDefault();
+          if (key.includes("_r")) {
+            repeticao = parseInt(key.split("_r")[1]);
+            key = key.split("_r")[0];
+          }
 
-  const qs = new URLSearchParams(window.location.search);
-  const cursoId = qs.get("cursoId") || "Curso";
-
-  const formData = new FormData(e.target);
-  const respostas = [];
-
-  formData.forEach((value, key) => {
-    if (value !== "NA") {
-      let repeticao = 0;
-
-      if (key.includes("_r")) {
-        repeticao = parseInt(key.split("_r")[1]);
-        key = key.split("_r")[0];
-      }
-
-      respostas.push({
-        pergunta: key,
-        valor: parseInt(value),
-        repeticao: repeticao
+          respostas.push({
+            pergunta: key,
+            valor: parseInt(value),
+            repeticao: repeticao
+          });
+        }
       });
+
+      const payload = {
+        cursoId: cursoId,
+        respostas: respostas
+      };
+
+      console.log("A enviar:", payload);
+
+      const response = await fetch("https://script.google.com/macros/s/AKfycbyZB3Rt59KItR4e7ZpVDL5c81DYFFIvv70hBpsJLZwZ_aW8-K5KnRvZAEnvQxGFxfrCtg/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await response.text();
+      console.log("Resposta:", result);
+
+      document.body.innerHTML = "<h2>Submetido com sucesso ✔️</h2>";
+
+    } catch (err) {
+      console.error("Erro:", err);
+      alert("Erro ao enviar. Abre F12 → Console.");
     }
   });
 
-  const payload = {
-    cursoId: cursoId,
-    respostas: respostas
-  };
-
-  // Manda para o sheets
- await fetch("https://script.google.com/macros/s/AKfycbyZB3Rt59KItR4e7ZpVDL5c81DYFFIvv70hBpsJLZwZ_aW8-K5KnRvZAEnvQxGFxfrCtg/exec", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    cursoId: cursoId,
-    respostas: respostas
-  })
-});
-
-
-
-  // Executar
-  repetirBloco3(repeticoes);
-  controlarLimiteSubmissoes(formandos);
-
 })();
 </script>
-
 </body>
 </html>
