@@ -358,13 +358,20 @@
     if (btn) btn.style.display = "none";
 
     // 🔥 marcar radios selecionados no HTML
-    document.querySelectorAll("input[type='radio']").forEach(radio => {
-     if (radio.checked) {
-    radio.setAttribute("checked", "checked");
-     } else {
-     radio.removeAttribute("checked");
-     }
-     });
+    // 🔥 transformar radios em texto visual
+document.querySelectorAll(".escala").forEach(container => {
+  const radios = container.querySelectorAll("input[type='radio']");
+  
+  let html = "";
+
+  radios.forEach(radio => {
+    const label = radio.parentElement.textContent.trim();
+    const marcado = radio.checked ? "☑" : "☐";
+    html += `<span style="margin-right:10px">${marcado} ${label}</span>`;
+  });
+
+  container.innerHTML = html;
+});
     
     // 🔥 remover scripts (para PDF limpo)
     document.querySelectorAll("script").forEach(s => s.remove());
