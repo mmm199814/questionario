@@ -293,10 +293,12 @@
 <!-- ========================== -->
 <script>
 (() => {
+  console.log("[Questionário] Script iniciado…");
 
+  // 🔹 Ler parâmetros da URL
   const qs = new URLSearchParams(window.location.search);
   const cursoId = qs.get("cursoId") || "Curso";
-  const repeticoes = parseInt(qs.get("repeticoes") || "0");
+  const repeticoes = Math.max(0, parseInt(qs.get("repeticoes") || "0", 10) || 0);
 
   // 🔹 Repetir bloco 3
   function repetirBloco3(n) {
@@ -310,8 +312,11 @@
       const clone = original.cloneNode(true);
       clone.removeAttribute("id");
 
-      clone.querySelectorAll("input").forEach(inp => {
-        if (inp.name.startsWith("p3_")) {
+      const h2 = clone.querySelector("h2");
+      if (h2) h2.textContent = `3. DESEMPENHO DO/A FORMADOR/A (Repetição ${r})`;
+
+      clone.querySelectorAll("input[type='radio']").forEach(inp => {
+        if (inp.name && inp.name.startsWith("p3_")) {
           inp.name = inp.name + "_r" + r;
         }
         inp.checked = false;
@@ -325,7 +330,7 @@
   repetirBloco3(repeticoes);
 
   // 🔥 SUBMIT
-  document.getElementById("formQuestionario").addEventListener("submit", async function(e) {
+  document.getElementById("formQuestionario").addEventListener("submit", function(e) {
     e.preventDefault();
 
     const formData = new FormData(e.target);
@@ -355,20 +360,23 @@
 
     console.log("A enviar:", payload);
 
-    // 🔥 ENVIO PARA GOOGLE SHEETS (CORRIGIDO)
-    const formBody = new URLSearchParams();
-    formBody.append("data", JSON.stringify(payload));
+    // 🔥 ENVIO VIA FORM (SEM CORS)
+    const form = document.createElement("form");
+    form.method = "POST";
+    form.action = "https://script.google.com/macros/s/AKfycbzQr8aGmaJ7kRdC8pCksMFTYNN-UgzkMuacgMFL26bhzYHhwDvEuVC5Ud6FbxzKIhCw9w/exec";
 
-    await fetch("https://script.google.com/macros/s/AKfycbzQr8aGmaJ7kRdC8pCksMFTYNN-UgzkMuacgMFL26bhzYHhwDvEuVC5Ud6FbxzKIhCw9w/exec", {
-      method: "POST",
-      mode: "no-cors",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: formBody.toString()
-    });
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = "data";
+    input.value = JSON.stringify(payload);
 
-    document.body.innerHTML = "<h2>Submetido com sucesso ✔️</h2>";
+    form.appendChild(input);
+    document.body.appendChild(form);
+
+    form.submit();
+
+    // 🔹 mensagem rápida antes de sair
+    document.body.innerHTML = "<h2>Submetido ✔️</h2>";
   });
 
 })();
