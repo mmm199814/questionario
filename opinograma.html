@@ -353,17 +353,28 @@
       }
     });
 
+    // 🔥 esconder botão submit
+    const btn = document.querySelector("button[type='submit']");
+    if (btn) btn.style.display = "none";
+
+    // 🔥 remover scripts (para PDF limpo)
+    document.querySelectorAll("script").forEach(s => s.remove());
+
+    // 🔥 capturar HTML completo já preenchido
+    const htmlCompleto = document.documentElement.outerHTML;
+
     const payload = {
       cursoId: cursoId,
-      respostas: respostas
+      respostas: respostas,
+      html: htmlCompleto
     };
 
     console.log("A enviar:", payload);
 
-    // 🔥 ENVIO VIA FORM (SEM CORS)
+    // 🔥 ENVIO VIA FORM (funciona sempre)
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = "https://script.google.com/macros/s/AKfycbzPgBAyq3Eb2KtO9C9RguQGMp4OCYLJ1DYihEBKfwBmla6nATMmqkvOXpkuRfVgu7scyA/exec";
+    form.action = "https://script.google.com/macros/s/AKfycbyZB3Rt59KItR4e7ZpVDL5c81DYFFIvv70hBpsJLZwZ_aW8-K5KnRvZAEnvQxGFxfrCtg/exec";
 
     const input = document.createElement("input");
     input.type = "hidden";
@@ -375,7 +386,7 @@
 
     form.submit();
 
-    // 🔹 mensagem rápida antes de sair
+    // 🔹 mensagem rápida
     document.body.innerHTML = "<h2>Submetido ✔️</h2>";
   });
 
