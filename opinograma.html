@@ -399,16 +399,16 @@ document.getElementById("formQuestionario").addEventListener("submit", async fun
     respostas: respostas
   };
 
-  // 🔥 AQUI ENTRA O MAKE
-  await fetch("https://hook.eu1.make.com/whbvebcokhjvluk7hoy1i145owgdfavo", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(payload)
-  });
-
-  document.body.innerHTML = "<h2>Submetido com sucesso ✔️</h2>";
+  // Manda para o sheets
+ await fetch("https://script.google.com/macros/s/AKfycbyZB3Rt59KItR4e7ZpVDL5c81DYFFIvv70hBpsJLZwZ_aW8-K5KnRvZAEnvQxGFxfrCtg/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    cursoId: cursoId,
+    respostas: respostas
+  })
 });
 
 
