@@ -298,37 +298,10 @@
   // 🔹 Ler parâmetros da URL
   const qs = new URLSearchParams(window.location.search);
   const cursoId = qs.get("cursoId") || "Curso";
-  const repeticoes = Math.max(0, parseInt(qs.get("repeticoes") || "0", 10) || 0);
   const formandos = parseInt(qs.get("formandos") || "1");
-  const formandoId = Math.random();
-  // 🔹 Repetir bloco 3
-  function repetirBloco3(n) {
-    const original = document.getElementById("bloco3");
-    if (!original || n <= 0) return;
 
-    const container = original.parentNode;
-    let afterNode = original;
-
-    for (let r = 1; r <= n; r++) {
-      const clone = original.cloneNode(true);
-      clone.removeAttribute("id");
-
-      const h2 = clone.querySelector("h2");
-      if (h2) h2.textContent = `3. DESEMPENHO DO/A FORMADOR/A (Repetição ${r})`;
-
-      clone.querySelectorAll("input[type='radio']").forEach(inp => {
-        if (inp.name && inp.name.startsWith("p3_")) {
-          inp.name = inp.name + "_r" + r;
-        }
-        inp.checked = false;
-      });
-
-      container.insertBefore(clone, afterNode.nextSibling);
-      afterNode = clone;
-    }
-  }
-
-  repetirBloco3(repeticoes);
+  // 🔹 ID único por pessoa
+  const formandoId = Date.now() + "_" + Math.floor(Math.random() * 1000);
 
   // 🔥 SUBMIT
   document.getElementById("formQuestionario").addEventListener("submit", function(e) {
@@ -354,46 +327,39 @@
       }
     });
 
-    // 🔥 esconder botão submit
+    // 🔥 esconder botão
     const btn = document.querySelector("button[type='submit']");
     if (btn) btn.style.display = "none";
 
-    // 🔥 marcar radios selecionados no HTML
-    // 🔥 transformar radios em texto visual
-document.querySelectorAll(".escala").forEach(container => {
-  const radios = container.querySelectorAll("input[type='radio']");
-  
-  let html = "";
+    // 🔥 transformar radios em texto (para PDF)
+    document.querySelectorAll("input[type='radio']").forEach(radio => {
+      if (radio.checked) {
+        radio.setAttribute("checked", "checked");
+      } else {
+        radio.removeAttribute("checked");
+      }
+    });
 
-  radios.forEach(radio => {
-    const label = radio.parentElement.textContent.trim();
-    const marcado = radio.checked ? "☑" : "☐";
-    html += `<span style="margin-right:10px">${marcado} ${label}</span>`;
-  });
-
-  container.innerHTML = html;
-});
-    
-    // 🔥 remover scripts (para PDF limpo)
+    // 🔥 remover scripts
     document.querySelectorAll("script").forEach(s => s.remove());
 
-    // 🔥 capturar HTML completo já preenchido
+    // 🔥 capturar HTML completo
     const htmlCompleto = document.documentElement.outerHTML;
 
     const payload = {
       cursoId: cursoId,
       formandos: formandos,
-      respostas: respostas,
       formandoId: formandoId,
+      respostas: respostas,
       html: htmlCompleto
     };
 
     console.log("A enviar:", payload);
 
-    // 🔥 ENVIO VIA FORM (funciona sempre)
+    // 🔥 ENVIO VIA FORM (sem CORS)
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = "https://script.google.com/macros/s/AKfycbzH_jbHhIhaB2AtGHLB36aNz_KkKbx63nP9Jiu_InH5iHELjpUVx5UD5kDE-C_XdXn-aQ/exec";
+    form.action = "https://script.google.com/macros/s/AKfycbw0pf14_NB1VRGhpY4NNgz5HPYyJXlEp_uAayuqzzveGg2Y6ljTV5Fy2XiuQ3MwHayCEA/exec";
 
     const input = document.createElement("input");
     input.type = "hidden";
@@ -405,7 +371,6 @@ document.querySelectorAll(".escala").forEach(container => {
 
     form.submit();
 
-    // 🔹 mensagem rápida
     document.body.innerHTML = "<h2>Submetido ✔️</h2>";
   });
 
