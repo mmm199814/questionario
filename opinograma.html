@@ -34,15 +34,15 @@
   </style>
 </head>
 <body>
- 
+
 <div class="nao-class">
   <span>NÃO CLASSIFICADO</span>
   <span>DF-AIN-QUES05_ALT02</span>
 </div>
- 
+
 <p style="text-align:center; font-size:13px; font-weight:bold; margin-bottom:4px;">ESCOLA DE TECNOLOGIAS NAVAIS</p>
 <h1>Questionário de Avaliação da Satisfação do/a (E)Formando/a</h1>
- 
+
 <div class="intro">
   <p>A avaliação constitui uma ferramenta essencial de controlo, aprendizagem e melhoria das ações de formação ministradas no Sistema de Formação Profissional da Marinha (SFPM). Nesse sentido, o presente questionário pretende avaliar o seu grau de satisfação relativamente ao curso que frequentou, pelo que gostaríamos que respondesse com sinceridade às questões a seguir apresentadas. Os dados obtidos serão tratados como confidenciais.</p>
   <br>
@@ -50,9 +50,9 @@
   <br>
   <p><strong>Escala: NA –</strong> Não aplicável | <strong>1 –</strong> Discordo totalmente | <strong>2 –</strong> Discordo | <strong>3 –</strong> Concordo | <strong>4 –</strong> Concordo totalmente</p>
 </div>
- 
+
 <form id="formQuestionario">
- 
+
   <!-- IDENTIFICAÇÃO -->
   <div class="identificacao">
     <table>
@@ -70,7 +70,7 @@
       </tr>
     </table>
   </div>
- 
+
   <!-- SECÇÃO 1 -->
   <table>
     <tr>
@@ -117,7 +117,7 @@
       <td class="centro radio-cell"><input type="radio" name="p1_5" value="3"></td>
       <td class="centro radio-cell"><input type="radio" name="p1_5" value="4"></td>
     </tr>
- 
+
     <!-- SECÇÃO 2 -->
     <tr>
       <th class="left">2 – RECURSOS UTILIZADOS</th>
@@ -155,7 +155,7 @@
       <td class="centro radio-cell"><input type="radio" name="p2_4" value="3"></td>
       <td class="centro radio-cell"><input type="radio" name="p2_4" value="4"></td>
     </tr>
- 
+
     <!-- SECÇÃO 3 — DINÂMICA -->
     <tr id="bloco3-header">
       <th class="left" colspan="6">3 – DESEMPENHO DO/A (E)FORMADOR/A</th>
@@ -166,9 +166,9 @@
       </td>
     </tr>
   </table>
- 
+
   <div id="bloco3"></div>
- 
+
   <!-- SECÇÃO 4 -->
   <table>
     <tr>
@@ -199,7 +199,7 @@
       <td class="centro radio-cell"><input type="radio" name="p4_3" value="3"></td>
       <td class="centro radio-cell"><input type="radio" name="p4_3" value="4"></td>
     </tr>
- 
+
     <!-- SECÇÃO 5 -->
     <tr>
       <th class="left" colspan="6">5 – APRECIAÇÃO GLOBAL DO CURSO/MÓDULO</th>
@@ -251,7 +251,7 @@
       <td class="centro radio-cell"><input type="radio" name="p5_3" value="3"></td>
       <td class="centro radio-cell"><input type="radio" name="p5_3" value="4"></td>
     </tr>
- 
+
     <!-- SECÇÃO 6 -->
     <tr>
       <th class="left" colspan="6">
@@ -271,7 +271,7 @@
       <td class="centro radio-cell"><input type="radio" name="p6_1" value="3"></td>
       <td class="centro radio-cell"><input type="radio" name="p6_1" value="4"></td>
     </tr>
- 
+
     <!-- SECÇÃO 7 -->
     <tr>
       <th class="left" colspan="6">7 – PONTOS FORTES E ASPETOS A MELHORAR</th>
@@ -293,23 +293,23 @@
       </td>
     </tr>
   </table>
- 
+
   <br>
   <button type="submit">Submeter</button>
 </form>
- 
+
 <p class="rodape">Obrigado pela sua colaboração</p>
- 
+
 <script>
 (() => {
   console.log("[Questionário Formando] Script iniciado…");
- 
+
   const qs       = new URLSearchParams(window.location.search);
   const cursoId  = qs.get("cursoId")    || "Curso";
   const formandos = parseInt(qs.get("formandos")  || "1");
   const repeticoes = parseInt(qs.get("repeticoes") || "1");
   const formandoId = Date.now() + "_" + Math.floor(Math.random() * 1000);
- 
+
   // Gera secção 3 dinamicamente
   const bloco3 = document.getElementById("bloco3");
   const perguntas3 = [
@@ -320,14 +320,24 @@
     "Desenvolveu um bom relacionamento com os/as (e)formandos/as",
     "Revelou disponibilidade para esclarecimento de dúvidas"
   ];
- 
+
+  // Lê os nomes dos formadores do URL (f1, f2, f3...)
+  const nomesFormadores = [];
   for (let r = 1; r <= repeticoes; r++) {
-    const sufixo = repeticoes > 1 ? " — Formador " + r : "";
+    nomesFormadores.push(qs.get("f" + r) || "");
+  }
+
+  for (let r = 1; r <= repeticoes; r++) {
+    const nomeFormador = nomesFormadores[r - 1];
+    const sufixo = repeticoes > 1
+      ? (nomeFormador ? " — " + nomeFormador : " — Formador " + r)
+      : (nomeFormador ? " — " + nomeFormador : "");
     let html = '<table style="width:100%; border-collapse:collapse; margin-bottom:0;">';
-    if (r > 1) {
-      html += '<tr><th class="left" style="background:#003366;color:#fff;padding:6px 8px;font-size:12px;text-align:left;" colspan="6">3 – DESEMPENHO DO/A (E)FORMADOR/A' + sufixo + '</th></tr>';
+    if (r > 1 || nomeFormador) {
+      const cabecalho = '3 – DESEMPENHO DO/A (E)FORMADOR/A' + sufixo;
+      html += '<tr><th class="left" style="background:#003366;color:#fff;padding:6px 8px;font-size:12px;text-align:left;" colspan="6">' + cabecalho + '</th></tr>';
     }
- 
+
     perguntas3.forEach(function(texto, i) {
       const num  = i + 1;
       const nome = "p3_" + num + "_r" + r;
@@ -343,58 +353,50 @@
     html += '</table>';
     bloco3.innerHTML += html;
   }
- 
+
   // SUBMIT
   document.getElementById("formQuestionario").addEventListener("submit", function(e) {
     e.preventDefault();
- 
+
     const formData = new FormData(e.target);
     const respostas = [];
- 
+
     formData.forEach((value, key) => {
       if (value === "NA") return;
- 
+
       let repeticao = 0;
       let perguntaKey = key;
- 
+
       if (perguntaKey.includes("_r")) {
         repeticao = parseInt(perguntaKey.split("_r")[1]);
         perguntaKey = perguntaKey.split("_r")[0];
       }
- 
+
       // Campos de texto livre
       const isTexto  = perguntaKey.startsWith("pf") || perguntaKey.startsWith("am");
       // Campos não numéricos (sim/não, modalidade)
       const isSimNao = perguntaKey === "p5_1_sfpm" || perguntaKey === "modalidade";
- 
+
       // Ignora campos de texto vazios
       if (isTexto && !value.trim()) return;
- 
+
       const valorFinal = (isTexto || isSimNao) ? value : parseInt(value);
- 
+
       respostas.push({ pergunta: perguntaKey, valor: valorFinal, repeticao: repeticao });
     });
- 
+
     const btn = document.querySelector("button[type='submit']");
     if (btn) btn.style.display = "none";
- 
+
     document.querySelectorAll("input[type='radio']").forEach(radio => {
       if (radio.checked) { radio.setAttribute("checked", "checked"); }
       else { radio.removeAttribute("checked"); }
     });
-    // 🔥 guardar valores dos inputs de texto no atributo value (para PDF)
-    document.querySelectorAll("input[type='text'], textarea").forEach(el => {
-     if (el.tagName === "TEXTAREA") {
-    el.textContent = el.value;
-      } else {
-    el.setAttribute("value", el.value);
-     }
-    });
- 
+
     document.querySelectorAll("script").forEach(s => s.remove());
- 
+
     const htmlCompleto = document.documentElement.outerHTML;
- 
+
     const payload = {
       tipo: "formando",
       cursoId: cursoId,
@@ -403,26 +405,25 @@
       respostas: respostas,
       html: htmlCompleto
     };
- 
+
     console.log("A enviar:", payload);
- 
+
     const form  = document.createElement("form");
     form.method = "POST";
-    form.action = "https://script.google.com/macros/s/AKfycbw1LoAPw_AVfbIs53z8E83C1fAesuWV7-XqwhK9gSm-BkvXrJ9KfaegmGtFUHs5ogRa5w/exec";
- 
+    form.action = "https://script.google.com/macros/s/AKfycbyhPleNM9bc89CaiwuGekxj_G1gUaQwwKW48OMQCY-rgGLUFc1Ph4tKKhZ4PBM2YcN2/exec";
+
     const input  = document.createElement("input");
     input.type   = "hidden";
     input.name   = "data";
     input.value  = JSON.stringify(payload);
- 
+
     form.appendChild(input);
     document.body.appendChild(form);
     form.submit();
- 
+
     document.body.innerHTML = "<h2>Submetido ✔️</h2>";
   });
 })();
 </script>
 </body>
 </html>
- 
