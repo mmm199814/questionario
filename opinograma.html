@@ -304,11 +304,28 @@
 (() => {
   console.log("[Questionário Formando] Script iniciado…");
 
-  const qs       = new URLSearchParams(window.location.search);
-  const cursoId  = qs.get("cursoId")    || "Curso";
-  const formandos = parseInt(qs.get("formandos")  || "1");
+  const qs        = new URLSearchParams(window.location.search);
+  const cursoId   = qs.get("cursoId")    || "Curso";
+  const formandos  = parseInt(qs.get("formandos")  || "1");
   const repeticoes = parseInt(qs.get("repeticoes") || "1");
-  const formandoId = Date.now() + "_" + Math.floor(Math.random() * 1000);
+  const ano        = qs.get("ano") || new Date().getFullYear().toString();
+
+  // ID persistente no localStorage — não muda mesmo que o QR seja regenerado
+  const storageKey = "formandoId_" + cursoId;
+  let formandoId   = localStorage.getItem(storageKey);
+  if (!formandoId) {
+    formandoId = cursoId + "_" + Date.now() + "_" + Math.floor(Math.random() * 9999);
+    localStorage.setItem(storageKey, formandoId);
+  }
+
+  // Verifica se já submeteu
+  const jaSubmeteu = localStorage.getItem("submetido_" + cursoId);
+  if (jaSubmeteu) {
+    document.body.innerHTML = '<div style="font-family:Arial;text-align:center;padding:60px 20px;">' +
+      '<h2 style="color:#003366;">✓ Questionário já submetido</h2>' +
+      '<p style="color:#666;margin-top:12px;">Já submeteste o teu questionário para este curso.<br>Obrigado pela tua colaboração!</p>' +
+      '</div>';
+  }
 
   // Gera secção 3 dinamicamente
   const bloco3 = document.getElementById("bloco3");
@@ -402,6 +419,7 @@
       cursoId: cursoId,
       formandos: formandos,
       formandoId: formandoId,
+      ano: ano,
       respostas: respostas,
       html: htmlCompleto
     };
@@ -419,8 +437,11 @@
 
     form.appendChild(input);
     document.body.appendChild(form);
-    form.submit();
 
+    // Marca como submetido no localStorage
+    localStorage.setItem("submetido_" + cursoId, "1");
+
+    form.submit();
     document.body.innerHTML = "<h2>Submetido ✔️</h2>";
   });
 })();
